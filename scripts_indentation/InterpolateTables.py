@@ -7,7 +7,7 @@ import numpy as np
 from scipy import interpolate
 import math
 
-scriptID   = string.replace('$Id: chopTable.py 153 2015-11-06 14:32:50Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: chopTable.py 153 2015-11-06 14:32:50Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 parser = OptionParser(option_class=damask.extendableOption, usage='%prog options [file[s]]', description = """
@@ -18,7 +18,7 @@ in .
 parser.add_option('--expX',
                   dest = 'expX',
                   type = 'string',
-                  help = 'xcolumn label of experimental file')
+                  help = 'xcolumn label of experimental file (depth should be strictly increasing)')
 
 parser.add_option('--expY',
                   dest = 'expY',
@@ -28,7 +28,7 @@ parser.add_option('--expY',
 parser.add_option('--simX',
                   dest = 'simX',
                   type = 'string',
-                  help = 'xcolumn label of simulated file')
+                  help = 'xcolumn label of simulated file (depth should be strictly increasing)')
 
 parser.add_option('--simY',
                   dest = 'simY',
@@ -54,6 +54,20 @@ parser.set_defaults(show = False,
 
 (options, filenames) = parser.parse_args()
 
+def strictly_increasing(L):
+  return all(x<y for x, y in zip(L, L[1:]))
+  
+def culprits(L):
+  a = L[1:]
+  rms = []
+  for i in range(len(a)):
+    if a[i] <= L[i]:
+      rms.append(i+1)
+  return rms
+
+def make_smooth(L,rms):
+  return np.delete(L,rms,0)
+
 table_exp = damask.ASCIItable(name = options.expfile, buffered = False, readonly = True)
 table_exp.head_read()
 table_exp.data_readArray((options.expX,options.expY))
@@ -67,9 +81,19 @@ table_sim.head_read()
 table_sim.data_readArray((options.simX,options.simY))
 x_sim_index = table_sim.label_index(options.simX)
 y_sim_index = table_sim.label_index(options.simY)
-
 x_sim_data = table_sim.data[:,x_sim_index]
 y_sim_data = table_sim.data[:,y_sim_index]
+
+# Check if data is strictly increasing. If not, delete neg delta data points
+if not strictly_increasing(x_sim_data):
+  sim_ids = culprits(x_sim_data)
+  x_sim_data = make_smooth(x_sim_data,sim_ids)
+  y_sim_data = make_smooth(y_sim_data,sim_ids)
+
+if not strictly_increasing(x_exp_data):
+  exp_ids = culprits(x_exp_data)
+  x_exp_data = make_smooth(x_exp_data,exp_ids)
+  y_exp_data = make_smooth(y_exp_data,exp_ids)
 
 last_sim_x = x_sim_data[len(x_sim_data)-1]
 last_exp_x = x_exp_data[len(x_exp_data)-1]
@@ -84,11 +108,12 @@ if last_exp_x > last_sim_x :
   y_exp_data = np.delete(y_exp_data,len(y_exp_data)-1)
 
 # --- loop over input files ------------------------------------------------------------------------
-
 new_X = np.sort(np.concatenate((x_exp_data,x_sim_data)))
 new_Y_sim = np.ones(new_X.size)*np.nan
 new_Y_exp = np.ones(new_X.size)*np.nan
 new_array = np.array((new_X,new_Y_sim,new_Y_exp)).T
+
+# x_sim_data, x_exp_data need to be strictly increasing
 function_sim = interpolate.InterpolatedUnivariateSpline(x_sim_data,y_sim_data,k=1)          # k=1 gives a linear interpolation
 function_exp = interpolate.InterpolatedUnivariateSpline(x_exp_data,y_exp_data,k=1)
 
@@ -108,22 +133,22 @@ for i in interpolate_indices_exp :
 
 new_array = new_array[~np.isnan(new_array).any(axis=1)]
 if options.show == True:
-  print "1 head "
-  print ' '.join(('new_X',options.simY,options.expY))
-  for i in xrange(new_array.shape[0]):
-    for j in xrange(new_array.shape[1]):
-      print new_array[i,j],
-    print
-  
+  print("1 head ")
+  print(' '.join(('new_X',options.simY,options.expY)))
+  for i in range(new_array.shape[0]):
+    for j in range(new_array.shape[1]):
+      print(new_array[i,j], end=' ')
+    print()
+
 #---- Error Integral ---------------------------------------------------------#
 error = 0.0
 a = 0.0
 b = 0.0
 exp_area = 0.0
-for i in xrange(new_array.shape[0] - 1):
+for i in range(new_array.shape[0] - 1):
   a = abs( new_array[i,1]   - new_array[i,2]   )
   b = abs( new_array[i+1,1] - new_array[i+1,2] )
   h = abs( new_array[i,0] - new_array[i+1,0] )
   error += 0.5 * (a + b) * h
   exp_area += 0.5 * abs(new_array[i,2] + new_array[i+1,2]) * h
-print error/exp_area
+print(error/exp_area)
