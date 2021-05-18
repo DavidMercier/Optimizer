@@ -4,4 +4,4 @@ Contains an optimization module as well as codes for fitness functions for singl
 Also added with this are objective function codes to get fitness for spectral solver in DAMASK and DAMASK-Mentat simulation
 
 # Updates
-Now the module also supports using Abaqus with DAMASK 2.0. 
+Now the module also supports usage of Abaqus (abq) with DAMASK 2.0. 
