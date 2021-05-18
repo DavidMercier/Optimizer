@@ -64,6 +64,6 @@ for file in filenames:
       shape = 'x'.join(map(str,[elevation.shape[1],elevation.shape[0]]))
     else: shape = ''
 
-    if options.verbose: print ' '.join(head)
-    print pixelsize,width,height,shape
+    if options.verbose: print(' '.join(head))
+    print(pixelsize,width,height,shape)
 

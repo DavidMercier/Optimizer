@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os,sys,damask
 import os,sys,string
@@ -6,7 +6,7 @@ from optparse import OptionParser
 import numpy as np
 import math
 
-scriptID   = string.replace('$Id: chopTable.py 153 2015-11-06 14:32:50Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: chopTable.py 153 2015-11-06 14:32:50Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 parser = OptionParser(option_class=damask.extendableOption, usage='%prog options [file[s]]', description = """
@@ -36,9 +36,8 @@ if filenames == []: filenames = [None]
 for name in filenames:
   try:
     table = damask.ASCIItable(name = name,
-                              outname = "chopped_"+os.path.basename(name),
-			      buffered = False,
-                              readonly = True,
+                              outname = os.path.join(os.path.dirname(name),"chopped_"+os.path.basename(name)),
+                  			      buffered = False,
                              )
   except: continue
 
@@ -49,7 +48,6 @@ for name in filenames:
 
   outputAlive = True
   while outputAlive and table.data_read():
-    table.data_write()
-    outputAlive = float(table.data[col_index]) != options.value
+    outputAlive = table.data_write() and float(table.data[col_index]) != options.value
 
   table.close()

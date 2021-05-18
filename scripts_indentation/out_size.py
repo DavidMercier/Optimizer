@@ -6,7 +6,7 @@ from optparse import OptionParser
 import numpy as np
 import math
 
-scriptID   = string.replace('$Id: out_size.py 153 2015-11-06 14:32:50Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: out_size.py 153 2015-11-06 14:32:50Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 parser = OptionParser(option_class=damask.extendableOption, usage='%prog options [file[s]]', description = """
@@ -31,7 +31,7 @@ for name in filenames:
   damask.util.report(scriptName,name)
   table.head_read()
   table.data_readArray()
-  print table.data.shape[0],table.data.shape[1]
-  for i in xrange(table.data.shape[1]):
-	print  np.amax(table.data[:,i])
+  print(table.data.shape[0],table.data.shape[1])
+  for i in range(table.data.shape[1]):
+	print(np.amax(table.data[:,i]))
   table.close()

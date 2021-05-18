@@ -13,12 +13,12 @@ class optimize(Optimization.Optimization):
 #===========================================
   def fitness(self,x):
 #============================================
-    print "****************************************************************************************"
-    print "                                  generation %i                                         "%(self.generation)                                               # generation
-    print "****************************************************************************************"
+    print("****************************************************************************************")
+    print("                                  generation %i                                         "%(self.generation))                                               # generation
+    print("****************************************************************************************")
 #------------- Replacing the parameters in material config ---------------------------------------- #
     rep = {}                                                                                        # dictionary representing the parameters
-    for i in xrange(len(x)):
+    for i in range(len(x)):
       rep["coords_%i"%(i+1)] = x[i]*1e6                                                             # parameters are in MPa 
 
     with open(self.mat_file,'r') as file_in:
@@ -40,7 +40,7 @@ class optimize(Optimization.Optimization):
     shutil.copy("%s/%s"%(self.root,self.exp_file),'%s/'%dir_loc)
     os.chdir('%s/'%dir_loc)
     with open("material.config",'w') as f_out:
-      for key,value in rep.items():
+      for key,value in list(rep.items()):
         contents = contents.replace("%s"%str(key),"%s"%str(value) )
       f_out.write(contents)
 
@@ -51,35 +51,35 @@ class optimize(Optimization.Optimization):
     cmd1 = '/opt/soft/MSC/marc2013.1/tools/run_damask -prog /egr/research/CMM/DAMASK/chakra34/code/DAMASK_marc.marc -jid  {}/{} -dirjid {} -dirjob {} -q b -ml 387555 -ci no -cr no -ver no'\
                  .format(dir_loc,self.job_id,dir_loc,dir_loc)
 #    call(cmd1,shell=True)
-    print cmd1
+    print(cmd1)
     
     cmd2 = 'postResults --cr f,p {}/{}.t16'.format(dir_loc,self.job_id)
 #    call(cmd2, shell=True)
-    print cmd2
+    print(cmd2)
 
     cmd3 = 'addCauchy {}/postProc/{}.txt'.format(dir_loc,self.job_id)
 #    call(cmd3,shell=True)
-    print cmd3
+    print(cmd3)
     cmd4 = 'addStrainTensors -0 -v {}/postProc/{}.txt'.format(dir_loc,self.job_id)
 #    call(cmd4,shell=True)
-    print cmd4
+    print(cmd4)
     cmd5 = 'addMises -s Cauchy -e "ln(V)" {}/postProc/{}.txt'.format(dir_loc,self.job_id)
 #    call(cmd5,shell=True)
-    print cmd5
+    print(cmd5)
 
     cmd6 = 'InterpolateTables.py --expX "Mises(ln(V))" --expY "Mises(Cauchy)" --expfile {}/{} --simX "Mises(ln(V))" --simY "Mises(Cauchy)" --simfile {}/postProc/{}.txt'\
                 .format(dir_loc,options.exp_file,dir_loc,self.job_id)
 #    error = check_output(cmd6, shell=True)
-    print cmd6
+    print(cmd6)
 
 
 #------------------------------------------------------------------------------------------------- #
     os.chdir('%s'%(self.root))
 
     self._counter += 1
-    print "+++++++++++++++++++++++++++++++++ current fitness ++++++++++++++++++++++++++++++++++++++"
-    print "                                       %s                                               "%(str(error))
-    print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    print("+++++++++++++++++++++++++++++++++ current fitness ++++++++++++++++++++++++++++++++++++++")
+    print("                                       %s                                               "%(str(error)))
+    print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 #    return float(error)
     return np.linalg.norm()
 
@@ -112,7 +112,7 @@ parser.add_option(      '--root',
 (options,filenames) = parser.parse_args()
 
 if not options.mat_file or not os.path.exists(options.mat_file):
-  print "Suitable format material config (file containing parameters) is not supplied "
+  print("Suitable format material config (file containing parameters) is not supplied ")
 if not options.exp_file or not os.path.exists(options.exp_file):
   parser.error('No file selected for comparison')
 if not os.path.exists(options.job_id):
@@ -134,5 +134,5 @@ theOptimizer = optimize(method = 'neldermead',
 theOptimizer.info_fitness(options.mat_file,options.job_id,options.exp_file)
 theOptimizer.optimize(verbose = False)
 
-print theOptimizer.cost
-print theOptimizer.best()
+print(theOptimizer.cost)
+print(theOptimizer.best())

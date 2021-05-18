@@ -12,7 +12,7 @@ import math
 """  Does a cross correlation between simulated spheroconical indenter tip and tip impression from AFM data """
 
 
-scriptID   = string.replace('$Id: Correlation_AFM.py 157 2015-11-06 14:37:59Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: Correlation_AFM.py 157 2015-11-06 14:37:59Z chakra34 $','\n','\\n')
 
 AFM_filename = sys.argv[1]                                                                 # AFM file name
 filename     = sys.argv[2]                                                                 # simulated tip file name
@@ -49,8 +49,8 @@ plt.show()
 
 tip += AFM_min
 
-print "Position of AFM min",np.unravel_index(np.argmin(table.data), table.data.shape)
-print "Position of Tip min",np.unravel_index(np.argmin(tip), tip.shape)
+print("Position of AFM min",np.unravel_index(np.argmin(table.data), table.data.shape))
+print("Position of Tip min",np.unravel_index(np.argmin(tip), tip.shape))
 
 #---------------------------- Correlation ---------------------------
 
@@ -59,11 +59,11 @@ corr = signal.correlate2d(table.data, template, mode ='same')
 ver,hor = np.unravel_index(np.argmax(corr), corr.shape)
 #---------------------------------------------------------------------
 
-print "Position of Max correlation",np.unravel_index(np.argmax(corr), corr.shape)
-print "y-axis ", ver 
-print "x-axis ",hor
-print "AFM min", AFM_min
-print "Depth at maximum correlation for AFM_data", table.data[ver,hor]
+print("Position of Max correlation",np.unravel_index(np.argmax(corr), corr.shape))
+print("y-axis ", ver) 
+print("x-axis ",hor)
+print("AFM min", AFM_min)
+print("Depth at maximum correlation for AFM_data", table.data[ver,hor])
 
 plt.contourf(tip,cmap='gray')
 plt.colorbar()
@@ -79,8 +79,8 @@ plt.title('Correlation')
 plt.show()
 
 template_data = table.data[ver - (N/2): ver + N/2 + 1 , hor - (N/2): hor + N/2 +1]
-print 'data min',np.unravel_index(np.argmin(template_data), template_data.shape)
-print 'tip min',np.unravel_index(np.argmin(tip), tip.shape)
+print('data min',np.unravel_index(np.argmin(template_data), template_data.shape))
+print('tip min',np.unravel_index(np.argmin(tip), tip.shape))
 
 plt.contourf(template_data,cmap='gray')
 plt.colorbar()
@@ -104,7 +104,7 @@ for d in offset:
 
 #--------------------------------------------------------------------------------------
 depth = AFM_min + pos
-print "Total Depth after Error Minimization" ,depth
+print("Total Depth after Error Minimization" ,depth)
 plt.contourf((template_data -(tip + pos)),cmap='gray')                            # actual AFM data vs the best fit found from above algorithm
 plt.colorbar()
 plt.title('Error in AFM and Simulated tip')
@@ -117,7 +117,7 @@ plt.show()
 # print template_data_2.shape
 # print "1 head "
 # print "values "
-# for i in xrange(template_data_2.shape[0]):
-#   for j in xrange(template_data_2.shape[1]):
+# for i in range(template_data_2.shape[0]):
+#   for j in range(template_data_2.shape[1]):
 #     print template_data_2[i,j],
 #   print

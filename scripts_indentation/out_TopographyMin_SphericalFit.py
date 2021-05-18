@@ -11,7 +11,7 @@ import math
 from optparse import OptionParser
 
 
-scriptID   = string.replace('$Id: out_TopographyMin_SphericalFit.py 154 2015-11-06 14:33:26Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: out_TopographyMin_SphericalFit.py 154 2015-11-06 14:33:26Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 parser = OptionParser(option_class=damask.extendableOption, usage='%prog options [file[s]]', description = """
@@ -79,7 +79,7 @@ for name in filenames:
   global_y,global_x = np.unravel_index(np.argmin(table.data), table.data.shape)
   global_z          = AFM_min
 
-  print "global",global_x,global_y,global_z,
+  print("global",global_x,global_y,global_z, end=' ')
   #---------------------------- Correlation ---------------------------
 
   template = tip
@@ -118,6 +118,6 @@ for name in filenames:
 
   #--------------------------------------------------------------------------------------
   spherical_fit_z = AFM_min + pos
-  print "spherical",spherical_fit_x,spherical_fit_y,spherical_fit_z
+  print("spherical",spherical_fit_x,spherical_fit_y,spherical_fit_z)
   
   table.close()

@@ -6,7 +6,7 @@ from optparse import OptionParser
 import numpy as np
 import math
 
-scriptID   = string.replace('$Id: add_SphericalOrientations.py 61 2015-09-12 17:53:29Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: add_SphericalOrientations.py 61 2015-09-12 17:53:29Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 
@@ -98,7 +98,7 @@ for name in filenames:
 # ------------------------------------------ assemble header ---------------------------------------
 
   table.info_append(scriptID + '\t' + ' '.join(sys.argv[1:]))
-  table.labels_append(['{}_SphericalEulers'.format(1+i) for i in xrange(3)])
+  table.labels_append(['{}_SphericalEulers'.format(1+i) for i in range(3)])
   table.head_write()
 
 # ------------------------------------------ process data ------------------------------------------
@@ -106,18 +106,18 @@ for name in filenames:
   outputAlive = True
   while outputAlive and table.data_read():                                                          # read next data line of ASCII table
     if inputtype == 'eulers':
-      o = damask.Orientation(Eulers   = np.array(map(float,table.data[column:column+3]))*toRadians,
+      o = damask.Orientation(Eulers   = np.array(list(map(float,table.data[column:column+3])))*toRadians,
                              symmetry = options.symmetry).reduced()
     elif inputtype == 'matrix':
-      o = damask.Orientation(matrix   = np.array(map(float,table.data[column:column+9])).reshape(3,3).transpose(),
+      o = damask.Orientation(matrix   = np.array(list(map(float,table.data[column:column+9]))).reshape(3,3).transpose(),
                              symmetry = options.symmetry).reduced()
     elif inputtype == 'frame':
-      o = damask.Orientation(matrix = np.array(map(float,table.data[column[0]:column[0]+3] + \
+      o = damask.Orientation(matrix = np.array(list(map(float,table.data[column[0]:column[0]+3] + \
                                                          table.data[column[1]:column[1]+3] + \
-                                                         table.data[column[2]:column[2]+3])).reshape(3,3),
+                                                         table.data[column[2]:column[2]+3]))).reshape(3,3),
                              symmetry = options.symmetry).reduced()
     elif inputtype == 'quaternion':
-      o = damask.Orientation(quaternion = np.array(map(float,table.data[column:column+4])),
+      o = damask.Orientation(quaternion = np.array(list(map(float,table.data[column:column+4]))),
                              symmetry   = options.symmetry).reduced()
     vector,symOp = o.inversePole([0.,0.,1.], proper=True)
     vector /= np.linalg.norm(vector)

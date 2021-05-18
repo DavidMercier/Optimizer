@@ -9,7 +9,7 @@ from optparse import OptionParser
 from scipy.interpolate import griddata
 
 
-scriptID   = string.replace('$Id: add_InterpolatedImage.py 247 2016-03-22 21:45:34Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: add_InterpolatedImage.py 247 2016-03-22 21:45:34Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 
@@ -114,7 +114,7 @@ for name in filenames:
 #--------------------------------------------------- output header info --------------------------------------
 
   table.labels_clear()
-  table.labels_append(['{}_gridInterpolation'.format(1+i) for i in xrange(3)])
+  table.labels_append(['{}_gridInterpolation'.format(1+i) for i in range(3)])
   table.info_clear()
   table.info_append(scriptID + '\t' + ' '.join(sys.argv[1:]))
   table.head_write()

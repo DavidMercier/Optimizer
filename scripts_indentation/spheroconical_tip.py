@@ -6,7 +6,7 @@ import numpy as np
 import math
 from optparse import OptionParser
 
-scriptID   = string.replace('$Id: spheroconical_tip.py 155 2015-11-06 14:34:21Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: spheroconical_tip.py 155 2015-11-06 14:34:21Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 #-------------------------------- spherical cap of indenter tip -----------------------------
@@ -81,8 +81,8 @@ table.head_write()
 #---------------------------- output result ------------------------------------------------
 
 tip = np.zeros(np.shape(grid_x),dtype=float)
-for j in xrange(len(grid_y)):
-  for i in xrange(len(grid_x)):
+for j in range(len(grid_y)):
+  for i in range(len(grid_x)):
     r = (grid_x[i,j]**2 + grid_y[i,j]**2)**0.5
     tip[i,j] = SphericalCap(r,options.radius) if r < np.cos(options.alpha)* options.radius else ConicalBase(r,options.radius,options.alpha)
     table.data = [grid_x[i,j] + options.pix_size * 0.5 * options.dimension[0],grid_y[i,j] + options.pix_size * 0.5 * options.dimension[1],0,0,0,tip[i,j]]

@@ -92,7 +92,7 @@ def tetragonal(tensile_ax,phi1,PHI,phi2):
                              [[0,-1,0],[-1,0,0],[0,0,-1]]
   ))
   for axis in axes:
-    for i in xrange(8):
+    for i in range(8):
       G = np.dot(symm_operators[i],g)
       crystal_vector = np.dot(G,axis)
       if crystal_vector[0] >= 0 and crystal_vector[1] >= 0 and crystal_vector[2] >= 0:
@@ -105,7 +105,7 @@ texfile = open("Indent_unitcell_IPF.tex", 'w')
 texfile.write(generate_tex('header'))
 tensile_ax = np.array([0,0,1])
 
-for i in xrange(5):
+for i in range(5):
 
 #   o = damask.Orientation(random=True, symmetry='tetragonal')
 #   vector,sym_op = o.inversePole([0,0,1],SST=True)
@@ -125,7 +125,7 @@ for i in xrange(5):
 
   v,symOp = o.inversePole([0.,0.,1.])
 
-  print "vector",v,symOp,"\n"
+  print("vector",v,symOp,"\n")
   X = v[0]/(1. + abs(v[2]))
   Y = v[1]/(1. + abs(v[2]))
   p = o.equivalentOrientations()[symOp]
@@ -134,12 +134,12 @@ for i in xrange(5):
 
   c = damask.Orientation(Eulers=np.array([1.5*np.pi+zeta,eta,0.5*np.pi-zeta]),symmetry='tetragonal')
 
-  print "random",o.asEulers(degrees=True)
-  print "convention",c.asEulers(degrees=True)
+  print("random",o.asEulers(degrees=True))
+  print("convention",c.asEulers(degrees=True))
   angle,axis = (c.quaternion*p.quaternion.conjugated()).asAngleAxis(degrees=True)
   if axis[2] < 0.0:
     angle *= -1
-  print "misorientation",(c.quaternion*p.quaternion.conjugated()).asAngleAxis(degrees=True)
+  print("misorientation",(c.quaternion*p.quaternion.conjugated()).asAngleAxis(degrees=True))
   cmd = 'unitcell -n "cell_{}" -c 0.5456 --up 0 1 0 -r -e {} '.format(i,' '.join(map(str,o.asEulers())))
 #  cmd1 = 'unitcell -n "cell_%i" -c 0.5456 -e %.02f %.02f %.02f '%((i+1),angle_conv[0],angle_conv[1],angle_conv[2])
   call(cmd,shell=True)

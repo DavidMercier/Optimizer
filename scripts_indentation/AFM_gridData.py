@@ -6,7 +6,7 @@ from optparse import OptionParser
 import numpy as np
 
 
-scriptID   = string.replace('$Id: AFM_gridData.py 61 2015-09-12 17:53:29Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: AFM_gridData.py 61 2015-09-12 17:53:29Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 
@@ -52,8 +52,8 @@ for name in filenames:
   table.info_clear()
   table.labels_clear()
   table.info_append("max indent depth (min value): {}".format(table.data.min()))
-  table.labels_append(['{}_pos'.format(1+i) for i in xrange(3)]+ \
-                      ['{}_displacement'.format(1+i) for i in xrange(3)])
+  table.labels_append(['{}_pos'.format(1+i) for i in range(3)]+ \
+                      ['{}_displacement'.format(1+i) for i in range(3)])
 
   table.head_write()
   

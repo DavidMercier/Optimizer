@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 
 
-scriptID   = string.replace('$Id: image_crop.py 151 2015-11-06 14:31:17Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: image_crop.py 151 2015-11-06 14:31:17Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 
@@ -47,8 +47,8 @@ for name in filenames:
     options.center = [imArray.shape[0]/2,imArray.shape[1]/2]
   if options.rmax == None:
     options.rmax = min(abs(imArray.shape[0] - options.center[0]),abs(imArray.shape[1] - options.center[1]))
-  for j in xrange(imArray.shape[1]):
-    for i in xrange(imArray.shape[0]):
+  for j in range(imArray.shape[1]):
+    for i in range(imArray.shape[0]):
       if ((options.center[0] - i)**2 + (options.center[1] - j)**2) >= (options.rmin)**2 and ((options.center[0] - i)**2 + (options.center[1] - j)**2) <= (options.rmax)**2 :
         newImArray[i,j,3] = 1 * 255
       else :

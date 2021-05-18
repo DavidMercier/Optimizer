@@ -8,7 +8,7 @@ from subprocess import call
 import math
 
 
-scriptID   = string.replace('$Id: latex_it.py 192 2015-11-11 17:26:30Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: latex_it.py 192 2015-11-11 17:26:30Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 def generate_tex(section):
@@ -59,7 +59,7 @@ parser.set_defaults(symmetry    = 'cubic',
 (options,filenames) = parser.parse_args()
 
 if options.patch == None:
-  print "Must provide a patch name ..."
+  print("Must provide a patch name ...")
   sys.exit()
 else:
 # Getting the path from where its executed
@@ -85,7 +85,7 @@ else:
       type = "proper"
     else :
       type = "improper"
-    range = table.label_indexrange(options.SST)
+    range = table.label_inderange(options.SST)
     theta = table.label_index(options.theta)
 #-------------------------------process and output result  --------------------------------
     header = open('%s_%s.tex'%(options.symmetry,type))
@@ -93,7 +93,7 @@ else:
     new.write('\\documentclass{article}\n')
     for line in header.readlines():
       new.write(line)
-    for j in xrange(len(table.data[:,0])):
+    for j in range(len(table.data[:,0])):
       if table.data[j,table.label_index('AFM_done')] == 1 :
         out = "%s/../experiment/Sn/%s/AFM/processed/%s/%s%s_cropped.png"%(script_path, 
                                                                               options.patch, 

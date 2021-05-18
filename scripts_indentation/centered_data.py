@@ -6,7 +6,7 @@ from optparse import OptionParser
 import numpy as np
 
 
-scriptID   = string.replace('$Id: centered_data.py 125 2015-10-30 03:37:22Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: centered_data.py 125 2015-10-30 03:37:22Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 
@@ -40,7 +40,7 @@ parser.set_defaults(size       = False,
 options.pix_size = eval(options.pix_size)
 
 if options.center == None :
-  print "The center has to be provided !!!"
+  print("The center has to be provided !!!")
   sys.exit()
 
 else :
@@ -70,5 +70,5 @@ else :
       offset[0] = -(dimension[0] - 2 * options.center[0])
     if new_grid_y/2 == (dimension[1] - options.center[1]) :
       offset[1] = -(dimension[1] - 2 * options.center[1])
-    print "new_grid",new_grid_x,new_grid_y,"offset",offset[0],offset[1]
+    print("new_grid",new_grid_x,new_grid_y,"offset",offset[0],offset[1])
     table.close()

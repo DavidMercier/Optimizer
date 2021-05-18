@@ -6,7 +6,7 @@ from optparse import OptionParser
 import numpy as np
 import math
 
-scriptID   = string.replace('$Id: AFM_to_geom_file.py 131 2015-11-01 17:36:53Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: AFM_to_geom_file.py 131 2015-11-01 17:36:53Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 parser = OptionParser(option_class=damask.extendableOption, usage='%prog options [file[s]]', description = """

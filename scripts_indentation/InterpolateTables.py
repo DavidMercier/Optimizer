@@ -85,12 +85,12 @@ x_sim_data = table_sim.data[:,x_sim_index]
 y_sim_data = table_sim.data[:,y_sim_index]
 
 # Check if data is strictly increasing. If not, delete neg delta data points
-if not strictly_increasing(x_sim_data):
+while not strictly_increasing(x_sim_data):
   sim_ids = culprits(x_sim_data)
   x_sim_data = make_smooth(x_sim_data,sim_ids)
   y_sim_data = make_smooth(y_sim_data,sim_ids)
 
-if not strictly_increasing(x_exp_data):
+while not strictly_increasing(x_exp_data):
   exp_ids = culprits(x_exp_data)
   x_exp_data = make_smooth(x_exp_data,exp_ids)
   y_exp_data = make_smooth(y_exp_data,exp_ids)

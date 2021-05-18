@@ -8,7 +8,7 @@ from subprocess import call
 import math
 
 
-scriptID   = string.replace('$Id: discretize_spherical_triangle.py 185 2015-11-09 15:56:55Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: discretize_spherical_triangle.py 185 2015-11-09 15:56:55Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 
@@ -168,7 +168,7 @@ def plot(vector):
   PHI  = eta
   phi2 = 90 - zeta
   if options.eulers == True:
-    print phi1,PHI,phi2
+    print(phi1,PHI,phi2)
   X = vector[0] /((1 + abs(vector[2])))                                                     # stereographic projection
   Y = vector[1] /((1 + abs(vector[2])))
   if options.unitcell == True :

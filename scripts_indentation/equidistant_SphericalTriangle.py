@@ -8,7 +8,7 @@ from subprocess import call
 import math
 
 
-scriptID   = string.replace('$Id: equidistant_SphericalTriangle.py 147 2015-11-06 14:26:55Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: equidistant_SphericalTriangle.py 147 2015-11-06 14:26:55Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 
@@ -166,7 +166,7 @@ def append(vector):
   PHI  = eta
   phi2 = 90 - zeta
   if options.eulers == True:
-    print phi1,PHI,phi2
+    print(phi1,PHI,phi2)
 #   X = vector[0] * math.sqrt(1. /(1 + abs(vector[2])))                                     # homochoric projection
 #   Y = vector[1] * math.sqrt(1. /(1 + abs(vector[2])))
   X = vector[0] /((1 + abs(vector[2])))                                                     # stereographic projection

@@ -5,7 +5,7 @@ import numpy as np
 import math
 from optparse import OptionParser
 
-scriptID   = string.replace('$Id: compare_pileup.py 154 2015-11-06 14:33:26Z chakra34 $','\n','\\n')
+scriptID   = str.replace('$Id: compare_pileup.py 154 2015-11-06 14:33:26Z chakra34 $','\n','\\n')
 scriptName = os.path.splitext(scriptID.split()[1])[0]
 
 parser = OptionParser(option_class=damask.extendableOption, usage='%prog options [file[s]]', description = """
@@ -40,7 +40,7 @@ parser.set_defaults(error      = False,
 
 
 if options.multiplier == None :
-  print "There has to be a multiplier!!!, aborting"
+  print("There has to be a multiplier!!!, aborting")
   sys.exit()
 
 
@@ -75,11 +75,11 @@ for name in filenames:
 
 #----------------- printing the absolute error if needed ---------------------------#
   if options.error :
-    for j in xrange(abs_error.shape[1]):
-      for i in xrange(abs_error.shape[0]):
-        print abs_error[i,j],
-      print
-  print ( np.nansum(abs_error)/ np.nansum(table.data/np.amax(table.data)) )
+    for j in range(abs_error.shape[1]):
+      for i in range(abs_error.shape[0]):
+        print(abs_error[i,j], end=' ')
+      print()
+  print(( np.nansum(abs_error)/ np.nansum(table.data/np.amax(table.data)) ))
 
 
 

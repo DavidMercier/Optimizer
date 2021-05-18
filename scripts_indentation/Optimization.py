@@ -31,9 +31,9 @@ class Optimization:
     self.rigid     = rigid                                                                          # to determine whether the bound is fixed or not
     self.points    = None
     self.fitnesses = None
-    self.cost      = 0
     self.generation= 0
     self.root      = root
+    self.locations  = {}
     if self.method == self._methods[1]:                                                             # pso
       self.localbest  = None                                                                        # array of positions and fitnesses
       self.velocities = None
@@ -65,6 +65,11 @@ class Optimization:
 # =====================================================
     b = np.argmin(self.fitnesses)
     return self.map2space(self.points[b]),self.fitnesses[b]
+
+# =======================================================
+  def cost(self):
+# =======================================================
+    return len(self.locations)
     
 # =====================================================
   def initPopulation(self,N = None):
@@ -175,14 +180,14 @@ class Optimization:
       fit_best      = self.fitnesses[rank[ 0]]
       fit_2ndworst  = self.fitnesses[rank[-2]]
       fit_worst     = self.fitnesses[rank[-1]]
-      fit_reflect   = self.fitness(self.map2space(pnt_reflect)) #; self.cost += 1
+      fit_reflect   = self.fitness(self.map2space(pnt_reflect)) 
       while fit_reflect == "none":
         pnt_reflect = self.fallBack(self.map2space(pnt_reflect))
         fit_reflect = self.fitness(self.map2space(pnt_reflect))
       if fit_reflect < fit_best:                                                                    # new best --> expand simplex further
         pnt_expansion = pnt_centroid*(1.-gamma) + pnt_reflect*gamma
         pnt_expansion = self.makeRigid(pnt_expansion) if self.rigid else pnt_expansion
-        fit_expansion = self.fitness(self.map2space(pnt_expansion)) #; self.cost += 1
+        fit_expansion = self.fitness(self.map2space(pnt_expansion)) 
         while fit_expansion == "none":
           pnt_expansion = self.fallBack(pnt_expansion)
           pnt_expansion = self.makeRigid(pnt_expansion) if self.rigid else pnt_expansion
@@ -197,7 +202,7 @@ class Optimization:
         pnt_contract = pnt_centroid*(1.-beta) \
                      + (pnt_reflect if fit_reflect < fit_worst else pnt_worst)*beta                 # contraction
         pnt_contract = self.makeRigid(pnt_contract) if self.rigid else pnt_contract
-        fit_contract = self.fitness(self.map2space(pnt_contract)) #; self.cost += 1
+        fit_contract = self.fitness(self.map2space(pnt_contract)) 
         while fit_contract == "none":
           pnt_contract = self.fallBack(pnt_contract)
           pnt_contract = self.makeRigid(pnt_contract) if self.rigid else pnt_contract
@@ -365,12 +370,12 @@ class Optimization:
     with open("{}/fitness_results.txt".format(self.root),'w') as fit:
       fit.write('1 head\n')
       fit.write('Cost Fitness\n')
-      fit.write('{} {}\n'.format(self.cost,self.fitnesses[best_pos]))
+      fit.write('{} {}\n'.format(self.cost(),self.fitnesses[best_pos]))
 
-    while self.fitnesses[best_pos] > self.tolerance and self.cost <= 200 :
+    while self.fitnesses[best_pos] > self.tolerance and self.cost() <= 200 :
       self.generation += 1
       with open("{}/fitness_results.txt".format(self.root),'a') as fit:
-        fit.write('{} {}\n'.format(self.cost,self.fitnesses[best_pos]))
+        fit.write('{} {}\n'.format(self.cost(),self.fitnesses[best_pos]))
       best_pos = self.updatePopulation()
       print ("=================== current population ======================")
       print (self.points)
